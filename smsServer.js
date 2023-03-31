@@ -1,21 +1,30 @@
-const express = require('express');
-const sendSMS = require('./sendSMS');
 
-const app = express();
-app.use(express.json());
-app.use(express.urlencoded({extended: false}));
-const port = process.env.PORT;
 
-app.listen(port, () => {
-        console.log(`App running on port: ${port}`);
-    });
+module.exports = async function (){
+        if(!text || !body){
+            console.log("the request body is empty")
+        }else{
+            let message = ""
 
-app.post("/webhook", async (req, res) => {
-    const {text,from} = req.body
-    if(!text || !body){
-        console.log("the request body is empty")
-    }else{
-        const response= await sendSMS(req.body.text,req.body.from);
-        res.sendStatus(200);
-    }
-  });
+            const url = 'http://enser.eastus.cloudapp.azure.com:5000/ensers';
+            const data = {
+                "query" : req.body.text
+            };
+
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            };
+
+            axios.post(url, data, config)
+            .then(response => {
+                console.log(response.answer);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+
+            const response= await sendSMS(message,req.body.from);
+        }
+}

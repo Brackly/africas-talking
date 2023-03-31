@@ -4,10 +4,9 @@ require("dotenv").config();
 // TODO: Initialize Africa's Talking
 const africastalking = AfricasTalking({
   apiKey: process.env.TOKEN,
-  username: 'sandbox'
+  username: process.env.USERNAME
 });
 
-console.log(process.env.TOKEN)
 module.exports = async function sendSMS(message,number) {
     
     // TODO: Send message
